@@ -24,13 +24,7 @@ pnpm install
 
 ### 2. Configure Environment Variables
 
-Copy the `.env.local` file and fill in your credentials:
-
-```bash
-# Edit .env.local with your credentials
-```
-
-Required environment variables:
+Add an `.env.local` file at the root of the repo and fill in with required environment variables:
 
 ```env
 # Authorization Client Settings
