@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# iTwin Viewer in Next.js - Proof of Concept
 
-## Getting Started
+This is a proof of concept demonstrating the [iTwin Viewer](https://github.com/iTwin/viewer) running in a Next.js App Router application.
+You'll want to figure out asset copying using a webpack plugin/config in next.config.ts to avoid having to manually copy localization
+files and other static assets (you'll notice that cursor icons are not working properly, for instance).
 
-First, run the development server:
+## Prerequisites
+
+Before running this application, you need:
+
+1. **Node.js+** and **pnpm** installed
+2. **iTwin Platform Credentials** from [developer.bentley.com](https://developer.bentley.com/)
+   - OIDC Client ID, Redirect URI, and Scopes
+   - An iTwin ID 
+   - An iModel ID
+
+## Setup Instructions
+
+### 1. Install Dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy the `.env.local` file and fill in your credentials:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Edit .env.local with your credentials
+```
 
-## Learn More
+Required environment variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# Authorization Client Settings
+NEXT_PUBLIC_IMJS_AUTH_CLIENT_CLIENT_ID="your-client-id"
+NEXT_PUBLIC_IMJS_AUTH_CLIENT_REDIRECT_URI="http://localhost:3000/signin-callback"
+NEXT_PUBLIC_IMJS_AUTH_CLIENT_LOGOUT_URI="http://localhost:3000"
+NEXT_PUBLIC_IMJS_AUTH_CLIENT_SCOPES="itwin-platform"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# iTwin and iModel IDs
+NEXT_PUBLIC_IMJS_ITWIN_ID="your-itwin-id"
+NEXT_PUBLIC_IMJS_IMODEL_ID="your-imodel-id"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Optional: Bing Maps Key 
+NEXT_PUBLIC_IMJS_BING_MAPS_KEY=""
+```
 
-## Deploy on Vercel
+### 3. Getting Your Credentials
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### OIDC Client Registration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Go to [developer.bentley.com](https://developer.bentley.com/)
+2. Register a new application
+3. Set the redirect URI to: `http://localhost:3000/signin-callback`
+4. Ensure the `itwin-platform` scope is enabled
+5. Copy your Client ID
+
+#### iTwin and iModel IDs
+
+- **iTwin ID**: Use the [iTwins API](https://developer.bentley.com/apis/itwins/operations/get-itwin/) to list your iTwins
+- **iModel ID**: Use the [iModels API](https://developer.bentley.com/apis/imodels-v2/operations/get-imodel-details/) to list iModels in your iTwin
+- **Alternative**: Follow the [Quick Start Tutorial](https://developer.bentley.com/tutorials/web-application-quick-start/) to create a test iModel
+
+### 4. Run the Development Server
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+viewer-next/
+├── app/
+│   ├── layout.tsx           # Root layout with iTwinUI styles
+│   ├── page.tsx             # Home page with setup instructions
+│   ├── viewer/
+│   │   └── page.tsx         # Viewer page (client-side only)
+│   └── signin-callback/
+│       └── page.tsx         # OIDC callback handler
+├── components/
+│   ├── ViewerApp.tsx        # Main viewer component wrapper
+│   └── UiProviders.tsx      # Tree widget and property grid providers
+├── lib/
+│   └── selectionStorage.ts  # Unified selection storage
+├── .env.local               # Environment variables (git-ignored)
+├── next.config.ts           # Next.js configuration with webpack customizations
+└── package.json             # Dependencies
+```
+
