@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "pnpm copy-assets && next dev",
+    "build": "pnpm copy-assets && next build",
     "copy-assets": "node scripts/copy-assets.js",
     "start": "next start",
     "lint": "next lint"
