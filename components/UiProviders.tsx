@@ -1,47 +1,71 @@
-/*---------------------------------------------------------------------------------------------
- * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
- * See LICENSE.md in the project root for license terms and full copyright notice.
- *--------------------------------------------------------------------------------------------*/
-"use client";
 
-import { createTreeWidget } from "@itwin/tree-widget-react";
 import {
-  ModelsTreeComponent,
+  AncestorsNavigationControls,
+  CopyPropertyTextContextMenuItem,
+  createPropertyGrid,
+  ShowHideNullValuesSettingsMenuItem,
+} from "@itwin/property-grid-react";
+import {
   CategoriesTreeComponent,
-  ExternalSourcesTreeComponent,
+  createTreeWidget,
+  ModelsTreeComponent,
 } from "@itwin/tree-widget-react";
-import { createPropertyGrid } from "@itwin/property-grid-react";
 
-/**
- * Create tree widget UI provider for the viewer
- * Should be called after TreeWidget.initialize()
- */
-export function createTreeWidgetUiProvider() {
-  return createTreeWidget({
-    trees: [
-      {
-        id: ModelsTreeComponent.id,
-        getLabel: ModelsTreeComponent.getLabel,
-        render: (props) => <ModelsTreeComponent {...props} />,
-      },
-      {
-        id: CategoriesTreeComponent.id,
-        getLabel: CategoriesTreeComponent.getLabel,
-        render: (props) => <CategoriesTreeComponent {...props} />,
-      },
-      {
-        id: ExternalSourcesTreeComponent.id,
-        getLabel: ExternalSourcesTreeComponent.getLabel,
-        render: (props) => <ExternalSourcesTreeComponent {...props} />,
-      },
-    ],
-  });
-}
+import { selectionStorage } from "@/lib/selectionStorage";
 
-/**
- * Create property grid UI provider for the viewer
- * Should be called after PropertyGridManager.initialize()
- */
-export function createPropertyGridUiProvider() {
-  return createPropertyGrid({});
-}
+export const treeWidgetUiProvider = {
+  id: "TreeWidgetUIProvider",
+  getWidgets: () => [
+    createTreeWidget({
+      trees: [
+        {
+          id: ModelsTreeComponent.id,
+          getLabel: () => ModelsTreeComponent.getLabel(),
+          render: (props) => (
+            <ModelsTreeComponent
+              getSchemaContext={(imodel) => imodel.schemaContext}
+              density={props.density}
+              selectionStorage={selectionStorage}
+              selectionMode={"extended"}
+              onPerformanceMeasured={props.onPerformanceMeasured}
+              onFeatureUsed={props.onFeatureUsed}
+            />
+          ),
+        },
+        {
+          id: CategoriesTreeComponent.id,
+          getLabel: () => CategoriesTreeComponent.getLabel(),
+          render: (props) => (
+            <CategoriesTreeComponent
+              getSchemaContext={(imodel) => imodel.schemaContext}
+              density={props.density}
+              selectionStorage={selectionStorage}
+              onPerformanceMeasured={props.onPerformanceMeasured}
+              onFeatureUsed={props.onFeatureUsed}
+            />
+          ),
+        },
+      ],
+    }),
+  ],
+};
+
+export const propertyGridUiProvider = {
+  id: "PropertyGridUIProvider",
+  getWidgets: () => [
+    createPropertyGrid({
+      autoExpandChildCategories: true,
+      ancestorsNavigationControls: (props) => (
+        <AncestorsNavigationControls {...props} />
+      ),
+      contextMenuItems: [
+        (props) => <CopyPropertyTextContextMenuItem {...props} />,
+      ],
+      settingsMenuItems: [
+        (props) => (
+          <ShowHideNullValuesSettingsMenuItem {...props} persist={true} />
+        ),
+      ],
+    }),
+  ],
+};

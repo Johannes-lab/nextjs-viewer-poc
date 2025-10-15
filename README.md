@@ -30,6 +30,7 @@ NEXT_PUBLIC_IMJS_AUTH_CLIENT_CLIENT_ID="your-client-id"
 NEXT_PUBLIC_IMJS_AUTH_CLIENT_REDIRECT_URI="http://localhost:3000/signin-callback"
 NEXT_PUBLIC_IMJS_AUTH_CLIENT_LOGOUT_URI="http://localhost:3000"
 NEXT_PUBLIC_IMJS_AUTH_CLIENT_SCOPES="itwin-platform"
+NEXT_PUBLIC_IMJS_AUTH_AUTHORITY= "https://ims.bentley.com"
 
 # iTwin and iModel IDs
 NEXT_PUBLIC_IMJS_ITWIN_ID="your-itwin-id"

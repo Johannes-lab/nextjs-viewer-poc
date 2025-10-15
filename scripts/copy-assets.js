@@ -14,13 +14,13 @@ function copyAssets() {
     "node_modules",
     "**",
     "@itwin",
-    "*",
+    "**",
     "lib",
     "public",
     "**",
     "*"
   );
-  const files = glob.sync(sourcePattern, { nodir: true });
+  const files = glob.sync(sourcePattern, { nodir: true, dot: true });
 
   files.forEach((file) => {
     const relativePath = file.replace(/.+public\//, "")

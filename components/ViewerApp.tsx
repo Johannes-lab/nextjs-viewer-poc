@@ -27,6 +27,7 @@ import {
   MeasureToolsUiItemsProvider,
 } from "@itwin/measure-tools-react";
 import { selectionStorage } from "@/lib/selectionStorage";
+import { propertyGridUiProvider, treeWidgetUiProvider } from "./UiProviders";
 
 interface ViewerAppProps {
   iTwinId: string;
@@ -89,6 +90,8 @@ export function ViewerApp({ iTwinId, iModelId, changesetId }: ViewerAppProps) {
       }),
       new ViewerStatusbarItemsProvider(),
       new MeasureToolsUiItemsProvider(),
+      treeWidgetUiProvider,
+      propertyGridUiProvider
       // TODO: Add tree widget and property grid after fixing configuration
     ],
     []
