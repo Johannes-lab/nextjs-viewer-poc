@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "pnpm copy-assets && next dev",
+    "build": "pnpm copy-assets && next build",
+    "copy-assets": "node scripts/copy-assets.js",
     "start": "next start",
     "lint": "next lint"
   },
@@ -54,6 +55,8 @@
     "@types/node": "^22",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
+    "fs-extra": "^11.3.2",
+    "glob": "^11.0.3",
     "sass": "^1.89.2",
     "typescript": "~5.6.2"
   },

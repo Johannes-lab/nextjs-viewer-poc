@@ -1,8 +1,6 @@
 # iTwin Viewer in Next.js - Proof of Concept
 
 This is a proof of concept demonstrating the [iTwin Viewer](https://github.com/iTwin/viewer) running in a Next.js App Router application.
-You'll want to figure out asset copying using a webpack plugin/config in next.config.ts to avoid having to manually copy localization
-files and other static assets (you'll notice that cursor icons are not working properly, for instance).
 
 ## Prerequisites
 
@@ -32,6 +30,7 @@ NEXT_PUBLIC_IMJS_AUTH_CLIENT_CLIENT_ID="your-client-id"
 NEXT_PUBLIC_IMJS_AUTH_CLIENT_REDIRECT_URI="http://localhost:3000/signin-callback"
 NEXT_PUBLIC_IMJS_AUTH_CLIENT_LOGOUT_URI="http://localhost:3000"
 NEXT_PUBLIC_IMJS_AUTH_CLIENT_SCOPES="itwin-platform"
+NEXT_PUBLIC_IMJS_AUTH_AUTHORITY= "https://ims.bentley.com"
 
 # iTwin and iModel IDs
 NEXT_PUBLIC_IMJS_ITWIN_ID="your-itwin-id"
@@ -58,6 +57,16 @@ NEXT_PUBLIC_IMJS_BING_MAPS_KEY=""
 - **Alternative**: Follow the [Quick Start Tutorial](https://developer.bentley.com/tutorials/web-application-quick-start/) to create a test iModel
 
 ### 4. Run the Development Server
+
+#### Copy Static Assets
+
+There are a number of assets needed by iTwin.js that must be copied to the `public/static` directory for Next.js to serve them.
+
+```bash
+pnpm copy-assets
+```
+
+#### Start the App
 
 ```bash
 pnpm dev
